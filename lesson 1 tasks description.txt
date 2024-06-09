@@ -1,0 +1,15 @@
+Завдання 1
+Запустіть Django на порт 80, щоб працювало посилання http://localhost/lesson_1/.
+
+Завдання 2
+Створіть новий застосунок lesson_11.
+
+Завдання 3
+За адресою http://localhost/lesson_1_1/ створіть таку HTML-сторінку:
+<p>Hello World!</p>
+<p>Django is one of the best framework on Python</p>
+<hr>
+
+Завдання 4
+Встановіть, налаштуйте та запустіть Django-сервер. Виведіть найпростішу HTML-сторінку з написом
+«Hello World!».
