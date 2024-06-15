@@ -1,5 +1,8 @@
+import json
+
 from django.http import HttpResponse
 import requests
+from const import OWM_URL
 
 
 def home(request):
@@ -24,16 +27,21 @@ def bio(request, username):
                         f"Iм'я користувача - {username}")
 
 
-def openweathermap(request, city):
-    weather = ''
-    lat = '49.98081'
-    lon = '36.25272'
-    api_key = '692f04b9abc71bb676ab2ad0e8583fb0'
-    api_request = 'https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + lon + '&appid=' + api_key
-    # api_request += '&mode=html'
-    response = requests.get(api_request)
-    if response.status_code == 200:
-        weather = response.text
+def openweathermap(request):
+    city = request.GET.get('city', '')
+    if city:
+        url = OWM_URL.format(city=city)
+        response = requests.get(url)
+        if response.status_code == 200:
+            weather = json.loads(response.text)
+            result = (f"* Country: {weather.get('sys').get('country')}<br>"
+                      f"* City: {weather.get('name')}<br>"
+                      f"* Coords: {weather.get('coord')}<br>"
+                      f"* Weather: {weather.get('main')}<br>"
+                      f"* Temp: {weather.get('main').get('temp')}<br><br>"
+                      f"{weather}")
+        else:
+            result = f'Ошибка при получении данных: код {response.status_code}'
     else:
-        weather = 'Ошибка при получении данных: код' + response.status_code
-    return HttpResponse(weather)
+        result = f'<script>alert("City {city} does not exist!");</script>'
+    return HttpResponse(result)
