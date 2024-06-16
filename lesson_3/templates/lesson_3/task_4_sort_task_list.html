@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sorted task list</title>
+</head>
+<body>
+<h1>Sorted Task List</h1>
+<ul>
+    {% for task in tasks|dictsortreversed:'priority' %}
+        <li>
+            <strong>Priority: {{ task.priority }}</strong> - {{ task.task }}
+        </li>
+    {% endfor %}
+</ul>
+</body>
+</html>

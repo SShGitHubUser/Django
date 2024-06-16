@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Name - surname</title>
+</head>
+<body>
+<h1>Name - Surname</h1>
+<ol>
+    {% for person in persons %}
+        <li>
+            Name: {{ person.name }},   surname: {{ person.surname }}
+        </li>
+    {% endfor %}
+</ol>
+</body>
+</html>

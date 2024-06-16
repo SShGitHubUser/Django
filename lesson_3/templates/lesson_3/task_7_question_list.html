@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question list</title>
+</head>
+<body>
+<h1>Question list</h1>
+{% if questions %}
+    <ul>
+        {% for question in questions %}
+            <li>
+                <a href="/polls/{{ question.id }}/">{{ question.question_text }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    Список запитань порожній
+{% endif %}
+</body>
+</html>
