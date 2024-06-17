@@ -1,0 +1,11 @@
+{% extends "lesson_3/task_5_base.html" %}
+
+{% block content %}
+    <h2>Ласкаво просимо до Всесвіту Зоряних воєн!</h2>
+    <h3>Виберіть сторінку:</h3>
+    <ul>
+        <li><a href="{% url 'luke' %}">Люк</a></li>
+        <li><a href="{% url 'leia' %}">Лея</a></li>
+        <li><a href="{% url 'han' %}">Ган</a></li>
+    </ul>
+{% endblock %}
