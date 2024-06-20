@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "lesson_1.apps.Lesson1Config",
     "lesson_1_1.apps.Lesson11Config",
     "lesson_2.apps.Lesson2Config",
-    "lesson_3.apps.Lesson3Config"
+    "lesson_3.apps.Lesson3Config",
+    "lesson_4.apps.Lesson4Config"
 ]
 
 MIDDLEWARE = [
@@ -76,8 +77,14 @@ WSGI_APPLICATION = 'Django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django_db',
+        'USER': 'student',
+        'PASSWORD': 'pass_word',
+        'HOST': 'localhost',
+        'PORT': '5432'
     }
 }
 

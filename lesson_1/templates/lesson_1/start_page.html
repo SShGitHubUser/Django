@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Стартова сторінка</title>
+</head>
+<body>
+<h1>Стартова сторінка курсу Django</h1>
+<ul>
+    <li>
+        <h3><a href="{% url 'lesson_1:lesson_1_tasks' %}">Урок 1. Вступ до Django</a></h3>
+    </li>
+    <li>
+        <h3><a href="{% url 'lesson_1:lesson_2_tasks' %}">Урок 2. Маршрутизація</a></h3>
+    </li>
+    <li>
+        <h3><a href="{% url 'lesson_1:lesson_3_tasks' %}">Урок 3. Шаблони та відображення</a></h3>
+    </li>
+    <li>
+        <h3><a href="{% url 'lesson_1:lesson_4_tasks' %}">Урок 4. Моделі</a></h3>
+    </li>
+
+</ul>
+</body>
+</html>
