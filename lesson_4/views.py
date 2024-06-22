@@ -1,7 +1,4 @@
-import random
-
 from django.http import HttpResponse
-from django.shortcuts import render
 from .models import *
 from faker import Faker
 from random import choice, randint

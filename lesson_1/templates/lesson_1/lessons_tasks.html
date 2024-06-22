@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<h3>{{ head }}</h3>
+<ul>
+{{ tasks. }}
+    {% for task in tasks %}
+        <li>
+        {{ task. }}
+            <h4>{{ task_name }}</h4>
+            {% for link in tasks.links %}
+                <a href="{% url link.URL %}">http://localhost/lesson_2/home/</a><br>
+            {% endfor %}
+
+            <a href="{% url 'lesson_2:home-view' %}">http://localhost/lesson_2/home/</a><br>
+            <a href="{% url 'lesson_2:book' title='Перша глава' %}">http://localhost/lesson_2/book/{назва
+                глави}/</a>
+            {{ task_text }}
+        </li>
+
+    {% endfor %}
+</ul>
+</body>
+</html>

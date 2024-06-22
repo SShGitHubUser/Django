@@ -24,3 +24,19 @@ def lesson_3_tasks(request):
 
 def lesson_4_tasks(request):
     return render(request, "lesson_1/lesson_4_tasks.html")
+
+
+def lessons_tasks(request):
+    context = {
+        'title': "Lessons tasks",
+        'tasks': [{
+            'task_title': "task_title",
+            'links': [{
+                'URL': "lesson_1_tasks",
+                'param': "lesson_1",
+                'text': "lesson_1_tasks",
+            }],
+            'text': "lesson_1_tasks"
+        }],
+    }
+    return render(request, "lesson_1/lessons_tasks.html", context=context)
