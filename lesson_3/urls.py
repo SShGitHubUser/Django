@@ -4,6 +4,7 @@ from . import views
 app_name = 'lesson_3'
 
 urlpatterns = [
+    path('', views.index, name='index'),
     path('tasks/', views.task_list, name='task_list'),
     path('download/', views.download, name='download'),
 
@@ -21,7 +22,7 @@ urlpatterns = [
     path('sort_tasks/', views.sort_task_list, name='sort_task_list'),
 
     # Taqsk 5. Star Wars
-    path('star_wars/', views.star_wars, name='index'),
+    path('star_wars/', views.star_wars, name='star_wars'),
     path('star_wars/luke/', views.luke, name='luke'),
     path('star_wars/leia/', views.leia, name='leia'),
     path('star_wars/han/', views.han, name='han'),

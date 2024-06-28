@@ -11,6 +11,38 @@ lets_do_it = [{'priority': 100, 'task': 'Скласти список справ'
               {'priority': 1, 'task': 'Подумати про сенс життя'}]
 
 
+def index(request):
+    with open('lesson_3/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+        task_descriptions = file.read()
+    context = {
+        'title': "Завдання уроку 3",
+        'head': "Завдання уроку 3. Шаблони та відображення",
+        'tasks': [{'links': [{'URL': "lesson_3:task_list", 'text': "http://localhost/lesson_3/tasks/"}],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_3:download", 'text': "http://localhost/lesson_3/download/"}],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_3:func_file", 'text': "http://localhost/lesson_3/func_file/ - файл"},
+                             {'URL': "lesson_3:func_json", 'text': "http://localhost/lesson_3/func_json/ - JSON"},
+                             {'URL': "lesson_3:func_html", 'text': "http://localhost/lesson_3/func_html/ - HTML"},
+                             {'URL': "lesson_3:func_text", 'text': "http://localhost/lesson_3/func_text/ - text"},
+                             {'URL': "lesson_3:class_file", 'text': "http://localhost/lesson_3/class_file/ - файл"},
+                             {'URL': "lesson_3:class_json", 'text': "http://localhost/lesson_3/class_json/ - JSON"},
+                             {'URL': "lesson_3:class_html", 'text': "http://localhost/lesson_3/class_html/ - HTML"},
+                             {'URL': "lesson_3:class_text", 'text': "http://localhost/lesson_3/class_text/ - text"}],
+                   'comments': ['Function Based Views and Class Based Views']},
+                  {'links': [{'URL': "lesson_3:sort_task_list", 'text': "http://localhost/lesson_3/sort_tasks/"}],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_3:star_wars", 'text': "http://localhost/lesson_3/star_wars/"}],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_3:person_list", 'text': "http://localhost/lesson_3/persons/"}],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_3:polls", 'text': "http://localhost/lesson_3/polls/"}],
+                   'comments': []},
+                  ],
+        'task_descriptions': task_descriptions}
+    return render(request, 'lesson_tasks.html', context=context)
+
+
 def task_list(request):
     result = '<h1>Task List</h1><ul>'
     for task in lets_do_it:

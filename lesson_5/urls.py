@@ -1,9 +1,8 @@
 from django.urls import path
 from . import views
 
-app_name = 'lesson_1'
+app_name = 'content'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('task_4/', views.task_4, name='task_4'),
 ]

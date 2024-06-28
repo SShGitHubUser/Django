@@ -3,40 +3,24 @@ from django.shortcuts import render
 
 
 def index(request):
-    return HttpResponse("Hello, world! Ви на сторінці 1 уроку.")
-
-
-def start(request):
-    return render(request, "lesson_1/start_page.html")
-
-
-def lesson_1_tasks(request):
-    return render(request, "lesson_1/lesson_1_tasks.html")
-
-
-def lesson_2_tasks(request):
-    return render(request, "lesson_1/lesson_2_tasks.html")
-
-
-def lesson_3_tasks(request):
-    return render(request, "lesson_1/lesson_3_tasks.html")
-
-
-def lesson_4_tasks(request):
-    return render(request, "lesson_1/lesson_4_tasks.html")
-
-
-def lessons_tasks(request):
+    with open('lesson_1/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+        task_descriptions = file.read()
     context = {
-        'title': "Lessons tasks",
-        'tasks': [{
-            'task_title': "task_title",
-            'links': [{
-                'URL': "lesson_1_tasks",
-                'param': "lesson_1",
-                'text': "lesson_1_tasks",
-            }],
-            'text': "lesson_1_tasks"
-        }],
+        'title': "Завдання уроку 1",
+        'head': "Завдання уроку 1. Вступ до Django",
+        'tasks': [{'links': [],
+                   'comments': ['Виконано']},
+                  {'links': [],
+                   'comments': ['Виконано']},
+                  {'links': [{'URL': "lesson_1_1:index", 'text': "http://localhost/lesson_1_1/"}],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_1:task_4", 'text': "http://localhost/lesson_1/task_4/"}],
+                   'comments': []},
+                  ],
+        'task_descriptions': task_descriptions
     }
-    return render(request, "lesson_1/lessons_tasks.html", context=context)
+    return render(request, 'lesson_tasks.html', context=context)
+
+
+def task_4(request):
+    return HttpResponse("Hello, World!")

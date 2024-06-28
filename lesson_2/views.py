@@ -1,8 +1,37 @@
 import json
-
-from django.http import HttpResponse
 import requests
+from django.http import HttpResponse
+from django.shortcuts import render
+
 from const import OWM_URL
+
+
+def index(request):
+    with open('lesson_2/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+        task_descriptions = file.read()
+    context = {
+        'title': "Завдання уроку 2",
+        'head': "Завдання уроку 2. Маршрутизація",
+        'tasks': [{'links': [{'URL': "lesson_2:home-view", 'text': "http://localhost/lesson_2/home/"},
+                             {'URL': "lesson_2:book", 'param': 'title="Перша глава"',
+                              'text': "http://localhost/lesson_2/book/{назва глави}/"}
+                             ],
+                   'comments': []},
+                  {'links': [{'URL': "lesson_2:index_view", 'text': "http://localhost/lesson_2/index/"},
+                             {'URL': "lesson_2:bio", 'param': 'username="User 1"',
+                              'text': "http://localhost/lesson_2/bio/{ім'я користувача}"}
+                             ],
+                   'comments': []},
+                  {'links': [],
+                   'comments': ['Виконано, дивись файл lesson_2__task_3.py']},
+                  {'links': [
+                      {'URL': "lesson_2:owm", 'param': None, 'text': "http://localhost/lesson_2/weather/?city=Kyiv"}],
+                      'comments': ['Виконано, додайте до адреси GET параметр виду "?city=Kyiv"']},
+                  ],
+        'task_descriptions': task_descriptions
+    }
+    return render(request, 'lesson_tasks.html', context=context)
+    # return render(request, 'lesson_2_tasks.html')
 
 
 def home(request):
@@ -16,9 +45,9 @@ def book(request, title):
                         f"Назва глави - {title}")
 
 
-def index(request):
-    return HttpResponse("Цей метод направляє URL з 'index/' у метод views.index "
-                        "і задає ім'я для цього URL як 'index-view'")
+def index_view(request):
+    return HttpResponse("Цей метод направляє URL з 'index_view/' у метод views.index_view "
+                        "і задає ім'я для цього URL як 'index_view'")
 
 
 def bio(request, username):
