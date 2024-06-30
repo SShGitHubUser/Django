@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизація користувача</title>
+</head>
+<body>
+<h1>Форми авторизації користувача</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Увiйти</button>
+</form>
+</body>
+</html>

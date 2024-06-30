@@ -20,7 +20,7 @@ def index(request):
                   {'links': [],
                    'comments': ['Виконано']},
                   {'links': [{'URL': "lesson_4:task_4", 'text': "http://localhost/lesson_4/task_4/"}],
-                   'comments': []},
+                   'comments': ['Виконано']},
                   {'links': [],
                    'comments': ['Виконано']},
                   {'links': [],
