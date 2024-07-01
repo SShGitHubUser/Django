@@ -5,11 +5,15 @@
     <title>Авторизація користувача</title>
 </head>
 <body>
-<h1>Форми авторизації користувача</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Увiйти</button>
+<h2>Форми авторизації користувача</h2>
+<form method="post" action="{% url 'lesson_5:index' %}">
+    {% for form in forms %}
+        {% csrf_token %}
+        <h3>{{ form.title }}</h3>
+        {{ form.as_p }}
+        <button type="submit" name="action" value="index">Назад</button>
+        <br><br>
+    {% endfor %}
 </form>
 </body>
 </html>
