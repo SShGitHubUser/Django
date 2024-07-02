@@ -5,12 +5,11 @@
     <title>Review form</title>
 </head>
 <body>
-<form method="POST" enctype="multipart/form-data">
+<h2>Review form</h2>
+<form method="post" action="{% url 'lesson_5:index' %}">
     {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-    </table>
-    <button type="submit">Submit form</button>
+    {{ form.as_p }}
+    <button type="submit" name="action" value="index">Back to lesson page</button>
 </form>
 </body>
 </html>

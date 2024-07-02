@@ -2,9 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Model forms</title>
 </head>
 <body>
-
+<h2>Lesson 4 model forms</h2>
+<form method="post" action="{% url 'lesson_5:index' %}">
+    {% for form in forms %}
+        <h3>{{ form.title }}</h3>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="action" value="index">Back to lesson page</button>
+        <br><br>
+    {% endfor %}
+</form>
 </body>
 </html>

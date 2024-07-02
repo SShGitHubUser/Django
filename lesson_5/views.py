@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from .forms import LoginForm, UserTypesLoginForm, EmailLoginForm, MemoryLoginForm
-from lesson_4.models import Product, User, Order, OrderItem
+from .forms import *
 
 
 def index(request):
@@ -15,12 +14,8 @@ def index(request):
                    'comments': []},
                   {'links': [{'URL': "lesson_5:model_forms", 'text': "http://localhost/lesson_5/model_forms/"}],
                    'comments': []},
-                  {'links': [],
-                   'comments': ['Виконано']},
-                  {'links': [],
-                   'comments': ['Виконано']},
-                  {'links': [],
-                   'comments': ['Виконано']},
+                  {'links': [{'URL': "lesson_5:review_form", 'text': "http://localhost/lesson_5/review_form/"}],
+                   'comments': []},
                   ],
         'task_descriptions': task_descriptions}
     return render(request, 'lesson_tasks.html', context=context)
@@ -35,8 +30,13 @@ def auth_forms(request):
 
 
 def model_forms(request):
-    return None
+    forms = [ProductForm(request.POST),
+             UserForm(request.POST),
+             OrderForm(request.POST),
+             OrderItemForm(request.POST)]
+    return render(request, 'lesson_5/model_forms.html', {'forms': forms})
 
 
 def review_form(request):
+    form=ReviewForm(request.POST)
     return render(request, 'lesson_5/review_form.html', {'form': form})

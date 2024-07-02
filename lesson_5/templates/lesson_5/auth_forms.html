@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Авторизація користувача</title>
+    <title>User authentication</title>
 </head>
 <body>
-<h2>Форми авторизації користувача</h2>
+<h2>User authentication forms</h2>
 <form method="post" action="{% url 'lesson_5:index' %}">
     {% for form in forms %}
-        {% csrf_token %}
         <h3>{{ form.title }}</h3>
+        {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" name="action" value="index">Назад</button>
+        <button type="submit" name="action" value="index">Back to lesson page</button>
         <br><br>
     {% endfor %}
 </form>

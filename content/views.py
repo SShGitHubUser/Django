@@ -10,6 +10,7 @@ def index(request):
                     {'URL': "lesson_3:index", 'text': "Урок 3. Шаблони та відображення"},
                     {'URL': "lesson_4:index", 'text': "Урок 4. Моделі"},
                     {'URL': "lesson_5:index", 'text': "Урок 5. Форми"},
+                    {'URL': "lesson_6:index", 'text': "Урок 6. Django ORM та адміністративна панель"},
                     ]}
     return render(request, "content/index.html", context=context)
 
