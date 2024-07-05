@@ -5,5 +5,7 @@ app_name = 'lesson_6'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    # path('lesson_5/auth_forms/', views.auth_forms, name='auth_forms'),
+    path('get_filtered/', views.get_filtered, name='get_filtered'),
+    path('get_get/', views.get_get, name='get_get'),
+    path('get_data/', views.get_data, name='get_data'),
 ]
