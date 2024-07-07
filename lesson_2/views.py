@@ -13,20 +13,21 @@ def index(request):
         'title': "Завдання уроку 2",
         'head': "Завдання уроку 2. Маршрутизація",
         'tasks': [{'links': [{'URL': "lesson_2:home-view", 'text': "http://localhost/lesson_2/home/"},
-                             {'URL': "lesson_2:book", 'param': 'title="Перша глава"',
+                             {'URL': "lesson_2:book", 'path_param': 'title="Перша глава"',
                               'text': "http://localhost/lesson_2/book/{назва глави}/"}
                              ],
                    'comments': []},
                   {'links': [{'URL': "lesson_2:index_view", 'text': "http://localhost/lesson_2/index/"},
-                             {'URL': "lesson_2:bio", 'param': 'username="User 1"',
-                              'text': "http://localhost/lesson_2/bio/{ім'я користувача}"}
+                             {'URL': "lesson_2:bio", 'path_param': 'username="User 1"',
+                              'text': "http://localhost/lesson_2/bio/{ім'я користувача}/"}
                              ],
                    'comments': []},
                   {'links': [],
                    'comments': ['Виконано, дивись файл lesson_2__task_3.py']},
                   {'links': [
-                      {'URL': "lesson_2:owm", 'param': None, 'text': "http://localhost/lesson_2/weather/?city=Kyiv"}],
-                      'comments': ['Виконано, додайте до адреси GET параметр виду "?city=Kyiv"']},
+                      {'URL': "lesson_2:owm", 'get_param': 'city=Kyiv',
+                       'text': "http://localhost/lesson_2/weather/?city=Kyiv"}],
+                      'comments': []},
                   ],
         'task_descriptions': task_descriptions
     }

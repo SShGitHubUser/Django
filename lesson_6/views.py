@@ -20,7 +20,12 @@ def index(request):
                   {'links': [{'URL': "lesson_6:get_filtered", 'text': "http://localhost/lesson_6/get_filtered/"}],
                    'comments': [
                        'Створено моделі Author та Book з відношеннями «багато-до-багатьох». Створено нові дані']},
-                  {'links': [{'URL': "lesson_6:get_get", 'text': "http://localhost/lesson_6/get_get/"}],
+                  {'links': [{'URL': "lesson_6:get_get", 'text': "http://localhost/lesson_6/get_get/"},
+                             {'URL': "lesson_6:get_get", 'get_param': 'maxprice=50.00',
+                              'text': "http://localhost/lesson_6/get_get/?maxprice=50.00"},
+                             {'URL': "lesson_6:get_get", 'get_param': 'bestseller=True',
+                              'text': "http://localhost/lesson_6/get_get/?bestseller=True"},
+                             ],
                    'comments': []},
                   {'links': [{'URL': "lesson_6:get_data", 'text': "http://localhost/lesson_6/get_data/"}],
                    'comments': []},
@@ -30,9 +35,11 @@ def index(request):
 
 
 def get_filtered(request):
+    # Очистка таблиц
     fake = Faker()
     Author.objects.all().delete()
     Book.objects.all().delete()
+    # Генерация новых данных
     for _ in range(10):
         Author.objects.create(name=fake.name(), birth_date=fake.date_between('-70y', '-30y'))
     authors = Author.objects.all()
@@ -50,6 +57,7 @@ def get_filtered(request):
         )
         book.authors.set([choice(authors) for _ in range(choices([1, 2, 3], [0.7, 0.2, 0.1])[0])])
         book.save()
+    # Получение данных с применением фильтров
     result = {
         'Exact: Book 1': list(Book.objects.filter(title__exact='Book 1').values_list()),
         'Contains: Book': list(Book.objects.filter(title__contains='Book').values_list()),
@@ -70,17 +78,31 @@ def get_filtered(request):
         'Year: 2000': list(Book.objects.filter(publication_date__year=2000).values_list()),
         'Month: 5': list(Book.objects.filter(publication_date__month=5).values_list()),
         'Day: 1': list(Book.objects.filter(publication_date__day=1).values_list()),
-        'Week day: 3': Book.objects.filter(publication_date__week_day=3).values_list(), }
+        'Week day: 3': list(Book.objects.filter(publication_date__week_day=3).values_list()), }
+    # Формирование HttpResponse
     http_response_str = '<h2>Використання QerySet filters</h2><br>'
     for key, value in result.items():
         http_response_str += f'<h3>{key}</h3>'
         for _ in value:
             http_response_str += f'<p>{_}</p>'
+    http_response_str += '<a  href="http://localhost/lesson_6/">Back to lesson page</a>'
     return HttpResponse(http_response_str)
 
 
 def get_get(request):
-    return None
+    maxprice = request.GET.get('maxprice', '')
+    bestseller = request.GET.get('bestseller', '')
+    if maxprice:
+        context = {'title': f'Перелік книг, що коштують не більш, ніж {maxprice}'}
+        books = list(Book.objects.filter(price__lte=maxprice).values_list('title', 'is_bestseller', 'price'))
+    elif bestseller:
+        context = {'title': f'Перелік книг - бестселлерів'}
+        books = list(Book.objects.filter(is_bestseller=True).values_list('title', 'is_bestseller', 'price'))
+    else:
+        context = {'title': 'Перелік всіх книг'}
+        books = list(Book.objects.all().values_list('title', 'is_bestseller', 'price'))
+    context['books'] = books
+    return render(request, 'lesson_6/get_get.html', context=context)
 
 
 def get_data(request):
@@ -95,4 +117,5 @@ def get_data(request):
         http_response_str += f'<h3>{key}</h3>'
         for _ in value:
             http_response_str += f'<p>{_}</p>'
+    http_response_str += '<a  href="http://localhost/lesson_6/">Back to lesson page</a>'
     return HttpResponse(http_response_str)

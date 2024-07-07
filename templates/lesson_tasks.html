@@ -11,10 +11,14 @@
         <li>
             <h4>Завдання {{ forloop.counter }}</h4>
             {% for link in task.links %}
-                {% if link.param %}
-                    <a href="{% url link.URL link.param %}">{{ link.text }}</a><br>
+                {% if link.path_param %}
+                    <a href="{% url link.URL link.path_param %}">{{ link.text }}</a><br>
                 {% else %}
-                    <a href="{% url link.URL %}">{{ link.text }}</a><br>
+                    {% if link.get_param %}
+                        <a href="{% url link.URL %}?{{ link.get_param }}">{{ link.text }}</a><br>
+                    {% else %}
+                        <a href="{% url link.URL %}">{{ link.text }}</a><br>
+                    {% endif %}
                 {% endif %}
             {% endfor %}
             {% for comment in task.comments %}
