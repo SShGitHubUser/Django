@@ -48,6 +48,7 @@ def task_list(request):
     for task in lets_do_it:
         result += f'<li><strong> Priority: {task["priority"]}</strong> - {task["task"]}</li>'
     result += '</ul>'
+    result += "<br><a href='http://localhost/lesson_3/'>Back to lesson page</a>"
     return HttpResponse(result)
 
 

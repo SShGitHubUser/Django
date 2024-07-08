@@ -37,24 +37,28 @@ def index(request):
 
 def home(request):
     return HttpResponse("Цей метод направляє URL з home/' у метод views.home"
-                        " і задає ім'я для цього URL як 'home-view'")
+                        " і задає ім'я для цього URL як 'home-view'"
+                        "<br><br><a href='http://localhost/lesson_2/'>Back to lesson page</a>")
 
 
 def book(request, title):
     return HttpResponse("Цей метод направляє URL з 'book/{назва глави}/' у метод views. Book разом "
                         "з назвою розділу як аргумент title та задає ім'я для цього URL як 'book'.<p>"
-                        f"Назва глави - {title}")
+                        f"Назва глави - {title}"
+                        "<br><br><a href='http://localhost/lesson_2/'>Back to lesson page</a>")
 
 
 def index_view(request):
     return HttpResponse("Цей метод направляє URL з 'index_view/' у метод views.index_view "
-                        "і задає ім'я для цього URL як 'index_view'")
+                        "і задає ім'я для цього URL як 'index_view'"
+                        "<br><br><a href='http://localhost/lesson_2/'>Back to lesson page</a>")
 
 
 def bio(request, username):
     return HttpResponse("Цей метод направляє URL з 'bio/{ім'я користувача}/' у метод views.bio разом "
                         "з ім'ям користувача як аргумент username та задає ім'я для цього URL як 'bio'<p>"
-                        f"Iм'я користувача - {username}")
+                        f"Iм'я користувача - {username}"
+                        f"<br><br><a href='http://localhost/lesson_2/'>Back to lesson page</a>")
 
 
 def openweathermap(request):
@@ -74,4 +78,5 @@ def openweathermap(request):
             result = f'Ошибка при получении данных: код {response.status_code}'
     else:
         result = f'<script>alert("City {city} does not exist!");</script>'
+    result += "<br><br><a href='http://localhost/lesson_2/'>Back to lesson page</a>"
     return HttpResponse(result)

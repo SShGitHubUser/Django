@@ -47,7 +47,9 @@ def task_2(request):
     for i in Course.objects.all():
         for j in range(choice([1, 2])):
             i.students.add(choice(Student.objects.all()))
-    return HttpResponse('Task 2 complited')
+    result = 'Task 2 complited'
+    result += "<br><br><a href='http://localhost/lesson_4/'>Back to lesson page</a>"
+    return HttpResponse(result)
 
 
 def task_4(request):
@@ -65,4 +67,6 @@ def task_4(request):
                           quantity=choice(range(10)),
                           )
         product.save()
-    return HttpResponse('Task 4 complited')
+    result = 'Task 4 complited'
+    result += "<br><br><a href='http://localhost/lesson_4/'>Back to lesson page</a>"
+    return HttpResponse(result)
