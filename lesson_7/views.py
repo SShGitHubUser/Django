@@ -12,13 +12,15 @@ def index(request):
         'tasks': [{'links': [],
                    'comments': ['Виконано']},
                   {'links': [],
-                   'comments': ['Виконано\nДодати:\nЗмінити:\n']},
+                   'comments': ['Виконано\nДодати або змінити:\n'
+                                'Сервіс дуже розвинений та продуманий, важко запропонувати щось додати/змінити.\n'
+                                'Можна додати дані про склад та кількість забруднень повітря, про рівень радіації, '
+                                'ймовірність прогнозів погоди.']},
                   {'links': [],
                    'comments': ['Виконано']},
                   {'links': [],
                    'comments': ['Виконано']},
-                  {'links': [{'URL': "lesson_7:ping_pong", 'get_param': 'message=PING',
-                              'text': "http://localhost/lesson_7/ping/"}],
+                  {'links': [{'URL': "lesson_7:ping_pong", 'text': "http://localhost/lesson_7/ping/"}],
                    'comments': []},
                   {'links': [],
                    'comments': []},
@@ -34,8 +36,8 @@ def index(request):
 
 @api_view(['GET'])
 def ping_pong(request):
-    if request.GET.get('message') == 'PING':
-        result = {'message': 'PONG'}
+    if request.method == 'GET':
+        result = {'answer': 'PONG'}
     else:
         result = {'error': "It's not PING!"}
     return Response(result)
