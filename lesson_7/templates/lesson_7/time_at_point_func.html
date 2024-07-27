@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time at point by APIView</title>
+</head>
+<body>
+<h2>Determining local time at a given point</h2>
+
+<form method="post" action="{% url method %}">
+    {% csrf_token %}
+    <style>
+        #lat, #lon {
+            width: 100px;
+        }
+    </style>
+    <div>
+        <label for="lat">Enter latitude</label><br>
+        <input id="lat" type="number" min="-90" max="90" step="any" placeholder="-90 to 90" name="lat"
+               required value="{{ latitude|default:'' }}"><br><br>
+        <label for="lon">Enter longitude</label><br>
+        <input id="lon" type="number" min="-180" max="180" step="any" placeholder="-180 to 190" name="lon"
+               required value="{{ longitude|default:'' }}">
+    </div>
+    <div>
+
+    </div>
+    <br><br>
+    <button type="submit">Show local time at a given point</button>
+</form>
+
+<br><br>
+<button onclick="window.location.href='{% url 'lesson_7:index' %}'">Back to lesson page</button>
+</body>
+</html>
