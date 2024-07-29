@@ -41,7 +41,7 @@ class User(models.Model):
     password = models.CharField(max_length=100, blank=True, null=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
-    phone = models.CharField(max_length=20, blank=True, null=True)
+    phone = models.CharField(max_length=30, blank=True, null=True)
 
 
 class Order(models.Model):

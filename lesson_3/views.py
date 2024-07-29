@@ -1,5 +1,6 @@
 import os
 
+from django.apps import apps
 from django.http import HttpResponse, FileResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -12,7 +13,8 @@ lets_do_it = [{'priority': 100, 'task': 'Скласти список справ'
 
 
 def index(request):
-    with open('lesson_3/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+    app_name = apps.get_containing_app_config(__name__).name
+    with open(f'{app_name}/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
         task_descriptions = file.read()
     context = {
         'title': "Завдання уроку 3",

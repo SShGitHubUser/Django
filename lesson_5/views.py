@@ -1,9 +1,11 @@
+from django.apps import apps
 from django.shortcuts import render
 from .forms import *
 
 
 def index(request):
-    with open('lesson_5/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+    app_name = apps.get_containing_app_config(__name__).name
+    with open(f'{app_name}/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
         task_descriptions = file.read()
     context = {
         'title': "Завдання уроку 5",

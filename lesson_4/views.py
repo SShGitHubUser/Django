@@ -1,13 +1,14 @@
+from django.apps import apps
 from django.http import HttpResponse
 from django.shortcuts import render
-
-from .models import *
 from faker import Faker
 from random import choice, randint
+from .models import *
 
 
 def index(request):
-    with open('lesson_4/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+    app_name = apps.get_containing_app_config(__name__).name
+    with open(f'{app_name}/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
         task_descriptions = file.read()
     context = {
         'title': "Завдання уроку 4",
@@ -67,6 +68,16 @@ def task_4(request):
                           quantity=choice(range(10)),
                           )
         product.save()
+    User.objects.all().delete()
+    for i in range(obj_create):
+        user = User(username=fake.word(),
+                    email=fake.email(),
+                    password=fake.password(),
+                    first_name=fake.first_name(),
+                    last_name=fake.last_name(),
+                    phone=fake.phone_number(),
+                    )
+        user.save()
     result = 'Task 4 complited'
     result += "<br><br><a href='http://localhost/lesson_4/'>Back to lesson page</a>"
     return HttpResponse(result)

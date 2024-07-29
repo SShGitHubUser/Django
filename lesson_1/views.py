@@ -1,9 +1,11 @@
+from django.apps import apps
 from django.http import HttpResponse
 from django.shortcuts import render
 
 
 def index(request):
-    with open('lesson_1/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+    app_name = apps.get_containing_app_config(__name__).name
+    with open(f'{app_name}/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
         task_descriptions = file.read()
     context = {
         'title': "Завдання уроку 1",

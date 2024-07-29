@@ -1,5 +1,8 @@
 from rest_framework import serializers
+from .models import CustomerReview
 
+
+# task 6
 
 class LocalTimeSerializer(serializers.Serializer):
     latitude = serializers.FloatField()
@@ -22,5 +25,10 @@ class LocalTimeSerializer(serializers.Serializer):
         return data
 
 
-class ResultSerializer(serializers.Serializer):
-    result = serializers.JSONField
+# task 7
+
+class CustomerReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomerReview
+        fields = '__all__'
+        read_only_fields = ['created_at']

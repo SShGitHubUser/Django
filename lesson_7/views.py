@@ -1,21 +1,27 @@
-from typing import Optional
-from django.shortcuts import render, redirect
-from rest_framework.decorators import api_view
+from random import choice
+
+import requests
+import pytz
+from django.shortcuts import render
+from django.apps import apps
+from faker import Faker
+from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import status, viewsets, permissions
 from datetime import datetime
-import pytz
+from typing import Optional
 from timezonefinder import TimezoneFinder
 
-from lesson_7.serializers import LocalTimeSerializer, ResultSerializer
-
-
-# from .serializers import TimeZoneSerializer
+import const
+from .serializers import LocalTimeSerializer, CustomerReviewSerializer
+from .models import CustomerReview
 
 
 def index(request):
-    with open('lesson_7/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
+    app_name = apps.get_containing_app_config(__name__).name
+    with open(f'{app_name}/lesson_tasks_description.txt', 'rt', encoding='utf-8') as file:
         task_descriptions = file.read()
     context = {
         'title': "Завдання уроку 7",
@@ -38,7 +44,8 @@ def index(request):
                              {'URL': "lesson_7:time_at_point_class",
                               'text': "http://localhost/lesson_7/time_at_point/  by ClassBasedView"}],
                    'comments': []},
-                  {'links': [],
+                  {'links': [{'URL': "lesson_7:customer_review_api",
+                              'text': "http://localhost/lesson_7/customer_review_api/"}],
                    'comments': []},
                   ],
         'task_descriptions': task_descriptions}
@@ -116,3 +123,76 @@ def time_func(request):
 
 # task 7
 
+class CustomerReviewViewSet(viewsets.ModelViewSet):
+    queryset = CustomerReview.objects.all().order_by('-created_at')
+    serializer_class = CustomerReviewSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [TokenAuthentication]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    @action(detail=False, methods=['get'])
+    def by_product(self, request):
+        product_id = request.query_params.get('product_id')
+        product_name = request.query_params.get('product_name')
+        if product_id:
+            reviews = self.queryset.filter(product__id=product_id)
+        elif product_name:
+            reviews = self.queryset.filter(product__name__icontains=product_name)
+        else:
+            return Response({"error": "Provide product_id or product_name"}, status=400)
+        serializer = self.get_serializer(reviews, many=True)
+        return Response(serializer.data)
+
+
+def customer_review_api(request):
+    fake = Faker()
+    url = 'http://localhost:80/lesson_7/reviews/'
+    token = const.DRF_TOKEN
+    headers = {'Authorization': f'Token {token}'}
+
+    # Вывод всех CustomerReview по дате
+    response = requests.get(url=url, headers=headers)
+    print(response.json())
+
+    # Добавление CustomerReview
+    for _ in range(5):
+        data = {
+            'user': choice(range(5)),
+            'product': choice(range(5)),
+            'image': None,
+            'email': fake.email(),
+            'description': fake.sentence(),
+            'rating': choice(range(3)),
+            'feedback_type': choice(('positive', 'negative')),
+            'phone_number': fake.phone_number()
+        }
+        response = requests.post(url=url, headers=headers, json=data)
+        print(response.json())
+
+    # Получить CustomerReview по ID
+    cr_id = choice(range(5))
+    response = requests.get(url=f'{url}/{cr_id}/', headers=headers)
+    print(f'ID = {cr_id}')
+    print(response.json())
+
+    # Обновление CustomerReview
+    cr_id = choice(range(5))
+    data = {
+        'user': choice(range(5)),
+        'product': choice(range(5)),
+        'image': None,
+        'email': fake.email(),
+        'description': fake.sentence(),
+        'rating': choice(range(3)),
+        'feedback_type': choice(('positive', 'negative')),
+        'phone_number': fake.phone_number()
+    }
+    response = requests.put(url=f'{url}/{cr_id}/', headers=headers, json=data)
+    print(response.json())
+
+    # Удалить CustomerReview
+    cr_id = int(input('Enter CustomerReview ID: '))
+    response = requests.delete(url=f'{url}/{cr_id}/', headers=headers)
+    print(response.status_code)
