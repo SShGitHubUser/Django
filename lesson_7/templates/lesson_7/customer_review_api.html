@@ -5,6 +5,11 @@
     <title>Customer Review Api</title>
 </head>
 <body>
-
+<h1>Операціі з Customer Reviews API</h1>
+{% for link in links %}
+    <h4>{{ link.title }}</h4>
+    <a href="{{ link.path }}">{{ link.path }}</a>
+    <br><br>
+{% endfor %}
 </body>
 </html>

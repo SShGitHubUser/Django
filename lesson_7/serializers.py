@@ -1,8 +1,10 @@
 from rest_framework import serializers
+
+from lesson_4.models import User, Product
 from .models import CustomerReview
 
 
-# task 6
+# ---> task 6
 
 class LocalTimeSerializer(serializers.Serializer):
     latitude = serializers.FloatField()
@@ -25,10 +27,22 @@ class LocalTimeSerializer(serializers.Serializer):
         return data
 
 
-# task 7
+# ---> task 7
 
 class CustomerReviewSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    product = serializers.PrimaryKeyRelatedField(queryset=Product.objects.all())
+
     class Meta:
         model = CustomerReview
         fields = '__all__'
         read_only_fields = ['created_at']
+
+    def create(self, validated_data):
+        return CustomerReview.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        return instance
