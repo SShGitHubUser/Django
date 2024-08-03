@@ -1,10 +1,7 @@
-import random
 from random import choice
-import requests
 import pytz
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.apps import apps
-from django.utils.encoding import force_str
 from faker import Faker
 from rest_framework.decorators import api_view, action
 from rest_framework.response import Response
@@ -125,38 +122,26 @@ def time_func(request):
 # ---> task 7
 
 def customer_review_api(request):
-    fake = Faker()
-    url = 'http://localhost:80/lesson_7/reviews/'
-    headers = {'Authorization': f'Token {const.DRF_TOKEN}'}
-    users_id = User.objects.all().values_list('id', flat=True)
-    products_id = Product.objects.all().values_list('id', flat=True)
+    # fake = Faker()
+    # url = 'http://localhost:80/lesson_7/reviews/'
+    # headers = {'Authorization': f'Token {const.DRF_TOKEN}'}
+    # users_id = User.objects.all().values_list('id', flat=True)
+    # products_id = Product.objects.all().values_list('id', flat=True)
 
     path_prefix = 'http://localhost/lesson_7/reviews/'
     context = {'links': [{'title': 'Вивести усі CustomerReviews за датою (GET)',
                           'path': f'{path_prefix}all_by_date/'},
                          {'title': 'Додати CustomerReview (POST, генерується автоматично)',
-                          'path': f'{path_prefix}add_customer_review/'},
-                         {'title': 'Видалити CustomerReview (DELETE, випадковий)',
-                          'path': f'{path_prefix}delete_customer_review/'},
-                         {'title': 'Оновити CustomerReview (PATCH, випадковий)',
-                          'path': f'{path_prefix}update_customer_review/'},
-                         {'title': 'Вивести CustomerReviews по ID (GET)', 'path': f'{path_prefix}get_by_id/'},
+                          'path': f'{path_prefix}add/'},
+                         {'title': 'Видалити CustomerReview (DELETE)',
+                          'path': f'{path_prefix}1/delete/'},
+                         {'title': 'Оновити CustomerReview (PATCH)',
+                          'path': f'{path_prefix}1/update/'},
+                         {'title': 'Вивести CustomerReviews по ID (GET)',
+                          'path': f'{path_prefix}1/by_id/'},
                          {'title': 'Вивести CustomerReviews по назві продукту (GET)',
-                          'path': f'{path_prefix}get_by_product_name/'}, ]}
+                          'path': f'{path_prefix}by_product/guess/'}, ]}
     return render(request, 'lesson_7/customer_review_api.html', context=context)
-
-    # Получить CustomerReview по ID
-    # customer_reviews_id = CustomerReview.objects.all().values_list('id', flat=True)
-    # cr_id = choice(customer_reviews_id)
-    # response = requests.get(url=f'{url}{cr_id}/', headers=headers)
-    # print(f'ID = {cr_id}')
-    # print(response.json())
-
-    # Получить CustomerReview по названию продукта
-    # product_name = 'need' # Для примера
-    # response = requests.get(url=f'{url}by_product/?product_name={product_name}', headers=headers)
-    # print(f'Product name = {product_name}')
-    # print(response.json())
 
 
 class CustomerReviewViewSet(viewsets.ModelViewSet):
@@ -166,7 +151,7 @@ class CustomerReviewViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     fake = Faker()
-    url = 'http://localhost:80/lesson_7/reviews/'
+    url = 'http://localhost/lesson_7/reviews/'
     headers = {'Authorization': f'Token {const.DRF_TOKEN}'}
 
     def dispatch(self, request, *args, **kwargs):
@@ -179,16 +164,18 @@ class CustomerReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save()
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], url_path='all_by_date')
     def all_by_date(self, request):
-        """ Вывод всех CustomerReviews по дате """
+        """ Вывод всех CustomerReviews по дате с убыванием """
         reviews = self.queryset.order_by('-created_at')
         serializer = self.get_serializer(reviews, many=True)
         return Response(serializer.data)
 
-    @action(detail=False, methods=['post'])
+    @action(detail=False, methods=['post', 'get'], url_path='add')
     def add_customer_review(self, request):
-        """ Добавление CustomerReview, данные генерируются автоматически """
+        """ Добавление CustomerReview, данные генерируются автоматически
+            Для добавления данных рекомендуется использовать метод POST,
+            метод GET добавлен для отладки, т.к. задание учебное """
         users_id = User.objects.all().values_list('id', flat=True)
         products_id = Product.objects.all().values_list('id', flat=True)
         data = {
@@ -206,25 +193,25 @@ class CustomerReviewViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=['delete'])
-    def delete_customer_review(self, request):
-        """ Удаление случайного CustomerReview """
-        customer_reviews_id = CustomerReview.objects.all().values_list('id', flat=True)
+    @action(detail=True, methods=['delete', 'get'], url_path='delete')
+    def delete_review(self, request, pk=None):
+        """ Удаление CustomerReview с заданным ID
+            Для удаления данных рекомендуется использовать метод DELETE,
+            метод GET добавлен для отладки, т.к. задание учебное """
         try:
-            cr_id = choice(customer_reviews_id)
-            review = CustomerReview.objects.get(id=cr_id)
+            review = get_object_or_404(CustomerReview, id=pk)
             review.delete()
-            return Response({"message": f"Review with ID {cr_id} deleted successfully"}, status=status.HTTP_200_OK)
+            return Response({"message": f"Review with ID {pk} deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
         except CustomerReview.DoesNotExist:
             return Response({"error": "Review not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=False, methods=['patch'])
-    def update_customer_review(self, request):
-        """ Обновление случайного CustomerReview автоматически сгенерированными данными """
-        customer_reviews_id = CustomerReview.objects.all().values_list('id', flat=True)
+    @action(detail=True, methods=['patch', 'get'], url_path='update')
+    def update_customer_review(self, request, pk=None):
+        """ Обновление CustomerReview с заданным ID автоматически сгенерированными данными.
+            Для обновления данных рекомендуется использовать метод PATCH,
+            метод GET добавлен для отладки, т.к. задание учебное """
         try:
-            cr_id = choice(customer_reviews_id)
-            review = CustomerReview.objects.get(id=cr_id)
+            review = get_object_or_404(CustomerReview, id=pk)
             data = {
                 'email': f'upd-{self.fake.email()}',
                 'description': 'Updated description'
@@ -237,27 +224,26 @@ class CustomerReviewViewSet(viewsets.ModelViewSet):
         except CustomerReview.DoesNotExist:
             return Response({"error": "Review not found"}, status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=False, methods=['get'])
-    def get_by_id(self, request):
-        customer_reviews_id = CustomerReview.objects.all().values_list('id', flat=True)
+    @action(detail=True, methods=['get'], url_path='by_id')
+    def get_by_id(self, request, pk=None):
+        """ Поиск CustomerReview по заданному ID """
         try:
-            cr_id = choice(customer_reviews_id)
-            review = CustomerReview.objects.get(id=cr_id)
+            review = get_object_or_404(CustomerReview, id=pk)
             serializer = self.get_serializer(review)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except CustomerReview.DoesNotExist:
             return Response({"error": "Отзыв не найден"}, status=status.HTTP_404_NOT_FOUND)
 
-    @action(detail=False, methods=['get'])
-    def get_by_product_name(self, request):
-        """ Поиск всех CustomerReviews по заданному продукту """
-        product_name = request.query_params.get('product_name', None)
-        if product_name is None:
-            return Response({"error": force_str("Please enter the product name")}, status=status.HTTP_400_BAD_REQUEST)
-
-        reviews = self.queryset.filter(product__name__icontains=product_name)
-        if not reviews.exists():
-            return Response({"message": f"Reviews for product '{product_name}' not found"},
-                            status=status.HTTP_404_NOT_FOUND)
-        serializer = self.get_serializer(reviews, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    @action(detail=False, methods=['get'], url_path='by_product/(?P<product>.*)')
+    def get_by_product_name(self, request, product=None):
+        """ Вывод всех CustomerReviews по названию продукта, содержащему заданную строку """
+        if product is not None:
+            try:
+                reviews = self.queryset.filter(product__name__icontains=product)
+                serializer = self.get_serializer(reviews, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except CustomerReview.DoesNotExist:
+                return Response({'error': f'Reviews for product "{product}" not found'},
+                                status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'Product parameter is required'}, status=status.HTTP_400_BAD_REQUEST)
