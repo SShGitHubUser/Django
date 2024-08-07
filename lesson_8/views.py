@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.apps import apps
 
 
@@ -13,17 +13,36 @@ def index(request):
                    'comments': ['Виконано']},
                   {'links': [],
                    'comments': ['Виконано']},
-                  {'links': [{'URL': "lesson_7:time_at_point_func",
-                              'text': "http://localhost/lesson_7/time_at_point/  by FunctionBasedView"}, ],
-                   'comments': []},
-                  {'links': [],
-                   'comments': ['Виконано']},
-                  {'links': [],
+                  {'links': [{'URL': 'lesson_8:paw_deploy',
+                              'text': 'Deploy ToDo List App on PaythonAnywhere.com'}, ],
                    'comments': ['']},
                   {'links': [],
                    'comments': ['Виконано']},
+                  {'links': [{'URL': 'lesson_8:paw_deploy',
+                              'text': 'Deploy ToDo List App on PaythonAnywhere.com'}, ],
+                   'comments': ['']},
                   {'links': [],
+                   'comments': ['Виконано']},
+                  {'links': [{'URL': 'lesson_8:paw_deploy',
+                              'text': 'Deploy ToDo List App on PaythonAnywhere.com'}, ],
                    'comments': ['']},
                   ],
         'task_descriptions': task_descriptions}
     return render(request, 'lesson_tasks.html', context=context)
+
+
+def paw_deploy(request):
+    result = """  <!DOCTYPE html>
+                <html lang='en'>
+                <head>
+                <meta charset='UTF-8'>
+                <title>Deploy on PaythonAnywhere</title>
+                </head>
+                <body>
+                <h3>Deploy ToDo List App on PaythonAnywhere.com</h3>                
+                <a href='https://sshpaw.pythonanywhere.com/todos/'>https://sshpaw.pythonanywhere.com/todos/</a>
+                <br><br>
+                This site may be disabled on November 7, 2024.                               
+                </body>
+                </html>"""
+    return HttpResponse(result)
