@@ -1,0 +1,3 @@
+[bandit]
+exclude_dirs:
+- "d:/Kolobok/Работа в IT/Курсы/CyberBionic Systematics/6. Django/000_Django_Lessons_Code/Django/.venv" 
