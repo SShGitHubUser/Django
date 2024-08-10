@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     "lesson_6.apps.Lesson6Config",
     "lesson_7.apps.Lesson7Config",
     "lesson_8.apps.Lesson8Config",
-    "lesson_9.apps.Lesson9Config"
+    "lesson_9.apps.Lesson9Config",
+    "lesson_10.apps.Lesson10Config"
 ]
 
 MIDDLEWARE = [

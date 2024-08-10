@@ -14,5 +14,6 @@ def index(request):
                     {'URL': "lesson_7:index", 'text': "Урок 7. Django та REST.Огляд REST, огляд Django Rest Framework"},
                     {'URL': "lesson_8:index", 'text': "Урок 8. Деплой Django додатку"},
                     {'URL': "lesson_9:index", 'text': "Урок 9. Безпека у Django"},
+                    {'URL': "lesson_10:index", 'text': "Урок 10. Практичне заняття"},
                     ]}
     return render(request, "content/index.html", context=context)

@@ -33,6 +33,7 @@ urlpatterns = [
     path('lesson_7/', include('lesson_7.urls', namespace='lesson_7')),
     path('lesson_8/', include('lesson_8.urls', namespace='lesson_8')),
     path('lesson_9/', include('lesson_9.urls', namespace='lesson_9')),
+    path('lesson_10/', include('lesson_10.urls', namespace='lesson_10')),
 ]
 
 if settings.DEBUG:
