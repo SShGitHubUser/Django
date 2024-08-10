@@ -12,7 +12,8 @@ def index(request):
         'head': "Завдання уроку 9. Безпека у Django",
         'tasks': [{'links': [],
                    'comments': ['Виконано']},
-                  {'links': [],
+                  {'links': [{'URL': 'lesson_9:security_checking',
+                              'text': 'Результати перевірок безпеки зовнішніми сервісами'}, ],
                    'comments': ['']},
                   {'links': [],
                    'comments': ['Виконано']},
@@ -25,25 +26,4 @@ def index(request):
 
 
 def security_checking(request):
-    result = """
-        <!DOCTYPE html>
-        <html lang='en'>
-        <head>
-        <meta charset='UTF-8'>
-            <title>Перевірки безпеки</title>
-        </head>
-        <body>
-            <h1>Результати перевірок безпеки зовнішніми сервісами</h1>
-            <br>
-            <p>
-                <a href='http://localhost/lesson_9/static/lesson_9/bandit.html'>Перевірка безпеки модулем Bandit - HTML формат</a>
-            </p>
-            <p>
-                <a href='http://localhost/lesson_9/static/lesson_9/bandit.json'>Перевірка безпеки модулем Bandit - JSON формат</a>
-            </p>
-            <p>
-                <a href='http://localhost/lesson_9/static/lesson_9/security_report.txt'>Перевірка безпеки модулем Django Security Check</a>
-            </p>
-        </body>
-        </html>"""
-    return HttpResponse(result)
+    return render(request, 'lesson_9/security_checking.html')

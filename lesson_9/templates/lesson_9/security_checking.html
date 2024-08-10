@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Перевірка безпеки</title>
+</head>
+<body>
+<h1>Перевірка безпеки зовнішніми сервісами</h1>
+<br>
+{% load static %}
+<p>
+    <a href="{% static 'lesson_9/bandit.html' %}">Перевірка безпеки модулем Bandit - HTML формат</a>
+</p>
+<p>
+    <a href="{% static 'lesson_9/bandit.json' %}">Перевірка безпеки модулем Bandit - JSON формат</a>
+</p>
+<p>
+    <a href="{% static 'lesson_9/security_report.txt' %}">Перевірка безпеки модулем Django Security Check</a>
+</p>
+<br>
+<a href="{% url 'lesson_9:index' %}">Back to lesson page</a>
+</body>
+</html>
