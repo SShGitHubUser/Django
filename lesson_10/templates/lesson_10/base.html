@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Todo App</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'lesson_10:home' %}"><h1>Todo App</h1></a>
+        {% if user.is_authenticated %}
+            <ul>
+                <li><a href="{% url 'lesson_10:currenttodos' %}">Current</a></li>
+                <li><a href="{% url 'lesson_10:completedtodos' %}">Completed</a></li>
+                <li><a href="{% url 'lesson_10:createtodo' %}">Create</a></li>
+            </ul>
+        {% endif %}
+        <ul>
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="#" onclick="document.getElementById('logoutForm').submit()">Logout</a>
+                    <form id="logoutForm" method="POST" action="{% url 'lesson_10:logoutuser' %}" style="display:none;">
+                        {% csrf_token %}
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'lesson_10:signupuser' %}">Sign Up</a></li>
+                <li><a href="{% url 'lesson_10:loginuser' %}">Login</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

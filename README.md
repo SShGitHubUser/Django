@@ -13,5 +13,3 @@ The Django course contains lessons on the following topics:
 8. Django application deployment
 9. Security in Django
 10. Practical lesson. A ToDo list creation
-11. Practical lesson. Development and deployment of a store website
-12. Practical lesson. Planning a train trip 

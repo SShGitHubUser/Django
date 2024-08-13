@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "security_check",
+    "django_bootstrap5",
     "lesson_1.apps.Lesson1Config",
     "lesson_1_1.apps.Lesson11Config",
     "lesson_2.apps.Lesson2Config",

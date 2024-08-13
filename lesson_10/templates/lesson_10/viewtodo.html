@@ -1,0 +1,38 @@
+{% extends "lesson_10/base.html" %}
+
+{% block content %}
+    <h2>New Todo</h2>
+
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="{{ todo.title }}" required>
+        </div>
+        <div>
+            <label for="memo">Memo</label>
+            <textarea name="memo" id="memo">{{ todo.memo }}</textarea>
+        </div>
+        <div>
+            <input type="checkbox" name="important" id="important" {% if todo.important %}checked{% endif %}>
+            <label for="important">Important</label>
+        </div>
+        <button type="submit">Save</button>
+        <button type="button" onclick="document.getElementById('completeForm').submit()">Complete</button>
+        <button type="button" onclick="document.getElementById('deleteForm').submit()">Delete</button>
+    </form>
+
+    {% if todo.datecompleted is None %}
+        <form id="completeForm" method="POST" action="{% url 'lesson_10:completetodo' todo.id %}" style="display: none;">
+            {% csrf_token %}
+        </form>
+    {% endif %}
+
+    <form id="deleteForm" method="POST" action="{% url 'lesson_10:deletetodo' todo.id %}" style="display: none;">
+        {% csrf_token %}
+    </form>
+{% endblock %}
