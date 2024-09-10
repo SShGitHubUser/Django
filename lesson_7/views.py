@@ -122,12 +122,6 @@ def time_func(request):
 # ---> task 7
 
 def customer_review_api(request):
-    # fake = Faker()
-    # url = 'http://localhost:80/lesson_7/reviews/'
-    # headers = {'Authorization': f'Token {const.DRF_TOKEN}'}
-    # users_id = User.objects.all().values_list('id', flat=True)
-    # products_id = Product.objects.all().values_list('id', flat=True)
-
     path_prefix = 'http://localhost/lesson_7/reviews/'
     context = {'links': [{'title': 'Вивести усі CustomerReviews за датою (GET)',
                           'path': f'{path_prefix}all_by_date/'},
@@ -157,7 +151,7 @@ class CustomerReviewViewSet(viewsets.ModelViewSet):
     def dispatch(self, request, *args, **kwargs):
         """ Подстановка токена авторизации в тело request
         Сделано для того, чтобы не подставлять токен какждый раз в URL.
-        Сделано исключительно в учебных целях, это не подходит для продакшена """
+        Сделано исключительно в учебных целях, это нельзя реализовывать в продакшне """
         request.META['HTTP_AUTHORIZATION'] = f'Token {const.DRF_TOKEN}'
         return super().dispatch(request, *args, **kwargs)
 
